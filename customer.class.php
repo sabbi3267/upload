@@ -3,25 +3,19 @@
 
 class Customer { 
 	public $id;
-    public $name;
-    public $email;
-    public $mobile;
-    public $username;
+    	public $name;
+    	public $email;
+    	public $mobile;
+    	public $username;
 	public $password; //text from HTML form
 	public $password_hash; //hased password
-	public $newPassword;
-	public $confirmNewPassword;
 	private $sessionid = null;
-    private $noerrors = true;
-    private $nameError = null;
-    private $emailError = null;
-    private $mobileError = null;
-	private $usernameError = null;
-	private $passwordError = null;
-	private $confirmCodeError = null;
-	private $confirmPasswordError = 'Changing password is optional';
-    private $title = "Customer";
-    private $tableName = "customers";
+    	private $noerrors = true;
+    	private $nameError = null;
+    	private $emailError = null;
+    	private $mobileError = null;
+	private $title = "Customer";
+    	private $tableName = "customers";
 	/*
      * This method displays the create page form, 
      * - Input: click incedent
