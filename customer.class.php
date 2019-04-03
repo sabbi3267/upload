@@ -6,7 +6,7 @@ class Customer {
     public $name;
     public $email;
     public $mobile;
-	public $username;
+    public $username;
 	public $password; //text from HTML form
 	public $password_hash; //hased password
 	public $newPassword;
@@ -533,11 +533,12 @@ class Customer {
         echo "
             </head>
             <body>
-               <a button type='submit' class='btn btn-success'href='https://github.com/sabbi3267/crud00' target='_blank'>Github</a><br />
-				<a button type='submit' class='btn btn-success'href='http://csis.svsu.edu/~nalam/cis355/crudoo/uml' target='_blank'>Uml</a><br />
+               <a button type='submit' class='btn btn-success'href='https://github.com/sabbi3267/uploads' target='_blank'>Github</a><br />
+				<a button type='submit' class='btn btn-success'href='https://github.com/sabbi3267/uploads/uml' target='_blank'>Uml</a><br />
 				
-				<a button type='submit' class='btn btn-success' href='https://app.flowmapp.com/share/4cb07449fea2e67392ef9ac7458d0a22/userflow/22594' target='_blank'>User Flow Diagram</a><br />
-                <div class='container'>
+				<a button type='submit' class='btn btn-success' href='https://github.com/sabbi3267/uploads/ufg.png' target='_blank'>User Flow Diagram</a><br />
+                		<a href='$this->logout.php?fun=logout' class='btn btn-warning'>Log Out</a>
+		<div class='container'>
                     <p class='row'>
                         <h3>$this->title" . "s" . "</h3>
                     </p>
