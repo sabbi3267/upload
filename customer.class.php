@@ -240,12 +240,12 @@ class Customer {
     } // end function delete_db_record()
     
 	/*
-     * This method displays the create page form, 
-     * - Input: click incedent
-     * - Processing: process HTML code
-     * - Output: HTML code for create page
-     * - Pre-condition: If there is nothing in the list takes it to it this page automatically
-     * - Post-conditon: After the input goes back to customers.php
+     * This method displays fetches the photo from the DB, 
+     * - Input: on the opening of the list photo page
+     * - Processing: connects to the DB and excutes sql code
+     * - Output: displays the photo
+     * - Pre-condition: Ther has to be a photo for that id
+     * - Post-conditon: disconnects the database after done
      */
 	function display_photo() {
 		if (isset($_GET['id'])){
@@ -273,50 +273,27 @@ class Customer {
 	}
 	
 	/*
-     * This method displays the create page form, 
-     * - Input: click incedent
-     * - Processing: process HTML code
-     * - Output: HTML code for create page
-     * - Pre-condition: If there is nothing in the list takes it to it this page automatically
-     * - Post-conditon: After the input goes back to customers.php
+     * This method saves a file to the database, 
+     * - Input: uploading a file once clicked upload
+     * - Processing: sets the locations size and type of the file in the DB
+     * - Output: moves the file to DB
+     * - Pre-condition: same name file cannot exists
+     * - Post-conditon: brings back the list view
      */
 	function save_file_to_directory(){
-		// set PHP variables from data in HTML form 
+		
 		$fileName       = $_FILES['Filename']['name'];
 		$tempFileName   = $_FILES['Filename']['tmp_name'];
 		$fileSize       = $_FILES['Filename']['size'];
 		$fileType       = $_FILES['Filename']['type'];
-		// $fileDescription = $_POST['Description']; // not used
-
-		// set server location (subdirectory) to store uploaded files
 		$fileLocation = "images/";
 		$fileFullPath = $fileLocation . $fileName; 
 		if (!file_exists($fileLocation))
-			mkdir ($fileLocation); // create subdirectory, if necessary
+			mkdir ($fileLocation); 
 		
-		// if file does not already exist, upload it
 		if (!file_exists($fileFullPath)) {
 			$result = move_uploaded_file($tempFileName, $fileFullPath);
-			if ($result) {
-				/*
-				echo "File <b><i>" . $fileName 
-					. "</i></b> has been successfully uploaded.";
-				// code below assumes filepath is same as filename of this file
-				// minus the 12 characters of this file, "upload01.php"
-				// plus the string, $fileLocation, i.e. "uploads/"
-				echo "<br>To see all uploaded files, visit: " 
-						. "<a href='"
-						. substr($this->get_current_url(), 0, 44)
-						. "$fileLocation'>" 
-						. substr($this->get_current_url(), 0, 44) 
-						. "$fileLocation</a>";
-						*/
-			} else {
-				echo "Upload denied for file. " . $fileName 
-					. "</i></b>. Verify file size < 2MB. ";
-			}
-		}
-		// otherwise, show error message
+			
 		else {
 			echo "File <b><i>" . $fileName 
 				. "</i></b> already exists. Please rename file.";
@@ -324,7 +301,7 @@ class Customer {
 	}
 	
 	/*
-     * This method displays the create page form, 
+     * This method gets the URL fo the upload image 
      * - Input: click incedent
      * - Processing: process HTML code
      * - Output: HTML code for create page
