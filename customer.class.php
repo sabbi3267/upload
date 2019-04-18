@@ -302,11 +302,11 @@ class Customer {
 	
 	/*
      * This method gets the URL fo the upload image 
-     * - Input: click incedent
-     * - Processing: process HTML code
-     * - Output: HTML code for create page
-     * - Pre-condition: If there is nothing in the list takes it to it this page automatically
-     * - Post-conditon: After the input goes back to customers.php
+     * - Input:function call
+     * - Processing:filters the url
+     * - Output: url for the image
+     * - Pre-condition: the url has to exist
+     * - Post-conditon: After done goes back to customers.php
      */
 	function get_current_url($strip = true) {
 		$filter = "";
@@ -314,23 +314,19 @@ class Customer {
 		$host;
 		if (!$filter) {
 			
-			// sanitize
 			$filter = function($input) use($strip) {
 				$input = trim($input);
 				if ($input == '/') {
 					return $input;
 				}
 
-				// add more chars if needed
 				$input = str_ireplace(["\0", '%00', "\x0a", '%0a', "\x1a", '%1a'], '', rawurldecode($input));
 
-				// remove markup stuff
+		
 				if ($strip) {
 					$input = strip_tags($input);
 				}
 
-				// encode
-				// you can change encoding if you don't use utf-8
 				$input = htmlspecialchars($input, ENT_QUOTES, 'utf-8');
 
 				return $input;
@@ -344,12 +340,12 @@ class Customer {
 	}
 	
 	/*
-     * This method displays the create page form, 
+     * This method displays the file upload form, 
      * - Input: click incedent
-     * - Processing: process HTML code
-     * - Output: HTML code for create page
-     * - Pre-condition: If there is nothing in the list takes it to it this page automatically
-     * - Post-conditon: After the input goes back to customers.php
+     * - Processing: echoes descrption fo the uploaded file
+     * - Output: uploaded image description 
+     * - Pre-condition: file description need to exists
+     * - Post-conditon: goes back to customers.php
      */
 	function display_file_upload() {
 		echo "
