@@ -239,7 +239,14 @@ class Customer {
         header("Location: $this->tableName.php");
     } // end function delete_db_record()
     
-	
+	/*
+     * This method displays the create page form, 
+     * - Input: click incedent
+     * - Processing: process HTML code
+     * - Output: HTML code for create page
+     * - Pre-condition: If there is nothing in the list takes it to it this page automatically
+     * - Post-conditon: After the input goes back to customers.php
+     */
 	function display_photo() {
 		if (isset($_GET['id'])){
 			$id = $_GET['id'];
@@ -265,6 +272,14 @@ class Customer {
 		}
 	}
 	
+	/*
+     * This method displays the create page form, 
+     * - Input: click incedent
+     * - Processing: process HTML code
+     * - Output: HTML code for create page
+     * - Pre-condition: If there is nothing in the list takes it to it this page automatically
+     * - Post-conditon: After the input goes back to customers.php
+     */
 	function save_file_to_directory(){
 		// set PHP variables from data in HTML form 
 		$fileName       = $_FILES['Filename']['name'];
@@ -308,6 +323,14 @@ class Customer {
 		}
 	}
 	
+	/*
+     * This method displays the create page form, 
+     * - Input: click incedent
+     * - Processing: process HTML code
+     * - Output: HTML code for create page
+     * - Pre-condition: If there is nothing in the list takes it to it this page automatically
+     * - Post-conditon: After the input goes back to customers.php
+     */
 	function get_current_url($strip = true) {
 		$filter = "";
 		$scheme; 
@@ -343,6 +366,14 @@ class Customer {
 		return sprintf('%s://%s%s', $scheme, $host, $filter($_SERVER['REQUEST_URI']));
 	}
 	
+	/*
+     * This method displays the create page form, 
+     * - Input: click incedent
+     * - Processing: process HTML code
+     * - Output: HTML code for create page
+     * - Pre-condition: If there is nothing in the list takes it to it this page automatically
+     * - Post-conditon: After the input goes back to customers.php
+     */
 	function display_file_upload() {
 		echo "
 				<p>File</p>
