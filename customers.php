@@ -10,16 +10,15 @@ require "customer.class.php";
 $cust = new Customer();
 
 
-
 if(isset($_GET["fun"])) {
 	$fun = $_GET["fun"];
-	if (!isset($_SESSION["user_id"])) { 
-		if (!($fun == "display_create_form" ||  $fun == "insert_db_record" )) { 
+	if (!isset($_SESSION["user_id"])) {
+		if (!($fun == "display_create_form" || $fun == "check_login" || $fun == "insert_db_record")) { 
 			$fun="display_login_view";
 		}
 	}
 }
-else $fun = "display_login"; 
+else $fun = "display_login_view"; 
 
 switch ($fun) {
 	case "logout":				$cust->logout();
