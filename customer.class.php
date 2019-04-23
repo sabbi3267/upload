@@ -91,7 +91,127 @@ class Customer {
         $this->generate_form_group("mobile", $this->mobileError, $this->mobile, "disabled");
         $this->generate_html_bottom(4);
     } // end function delete_record()
-    
+    /*
+     * This method checks the email from the database, 
+     * and redirects user to List, IF user input is valid, 
+     * OTHERWISE it redirects user back to delete form, with errors
+     * - Input: user data from Create form
+     * - Processing: delete (SQL)
+     * - Output: None (This method does not generate HTML code,
+     *   it only changes the content of the database)
+     * - Precondition: Public variables set (name, email, mobile)
+     *   and database connection variables are set in datase.php.
+     * - Postcondition: The record is removed from the database table
+     *   and user is redirected to the List screen (if no errors)
+     */
+    private function check_email() {
+		$valid = false;
+		$pdo = Database::connect();
+		$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+		$sql = $sql = "SELECT * FROM $this->tableName WHERE email = ? LIMIT 1";
+		$q = $pdo->prepare($sql);
+		$q->execute(array($this->email));
+		$data = $q->fetch(PDO::FETCH_ASSOC);
+		if (!($data)) {
+			$valid = true; 
+		}
+		Database::disconnect();
+		return $valid;
+	}
+   
+/*
+     * This method checks if the password is vaiid, 
+     * and redirects user to List, IF user input is valid, 
+     * OTHERWISE it redirects user back to delete form, with errors
+     * - Input: user data from Create form
+     * - Processing: delete (SQL)
+     * - Output: None (This method does not generate HTML code,
+     *   it only changes the content of the database)
+     * - Precondition: Email is uniquie
+     *   and database connection variables are set in datase.php.
+     * - Postcondition: email is saved
+     */
+     private function check_password() {
+		$valid = true;
+		$pdo = Database::connect();
+        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+		$this->password_hashed = MD5($this->password);
+		$sql = "SELECT * FROM $this->tableName WHERE id = ? AND password_hash = ? LIMIT 1";
+		$q = $pdo->prepare($sql);
+		$q->execute(array($this->id,$this->password_hashed));
+		$data = $q->fetch(PDO::FETCH_ASSOC);
+		
+		if (!($data)) {
+			Database::disconnect();
+			$valid = false;
+			$this->passwordError = 'Incorrect password, unable to change user information';
+			$this->update_record($this->id);
+		}
+		if ($this->newPassword == $this->confirmNewPassword) {
+			if ($this->newPassword != "" && $this->confirmNewPassword != ""){
+				//update password
+				$this->password = $this->newPassword;
+				$this->password_hashed = MD5($this->password);
+				$sql = "UPDATE $this->tableName set password_hash = ? WHERE id = ?";
+				$q = $pdo->prepare($sql);
+				$q->execute(array($this->password_hashed,$this->id));
+			}
+		}
+		else {
+			Database::disconnect();
+			$valid = false;
+			$this->confirmPasswordError = 'New passwords do not match';
+			$this->update_record($this->id);
+		}
+		
+		Database::disconnect();
+		return $valid; 
+     }
+	
+/*
+     * This method checks the if the login i valid , 
+     * and redirects user to List, IF user input is valid, 
+     * OTHERWISE it redirects user back to delete form, with errors
+     * - Input: user data from log in
+     * - Processing: sql for password and 
+     * - Output: None (This method does not generate HTML code,
+     *   it only changes the content of the database)
+     * - Precondition: Public variables set (name, email, mobile)
+     *   and database connection variables are set in datase.php.
+     * - Postcondition: The record is removed from the database table
+     *   and user is redirected to the List screen (if no errors)
+     */
+	function check_login() {
+		if ($this->loginFieldsValid()) { 
+            $pdo = Database::connect();
+            $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+			$this->password_hashed = MD5($this->password);
+            $sql = "SELECT * FROM $this->tableName WHERE email = ? AND password_hash = ? LIMIT 1";
+			$q = $pdo->prepare($sql);
+			$q->execute(array($this->username,$this->password_hashed));
+			$data = $q->fetch(PDO::FETCH_ASSOC);
+			if ($data) {
+				//create session id
+				$_SESSION['user_id'] = $data['id'];
+				$this->sessionid = $data['id'];
+				Database::disconnect();
+				header("Location: $this->tableName.php?fun=display_list&id=$this->sessionid");
+			}
+			else {
+				Database::disconnect();
+				$this->usernameError = 'Invalid login information';
+				$this->login_view();
+			}
+        }
+        else {
+            $this->login_view(); 
+        }
+	}
+	
+	function logout() {
+		session_destroy();
+		header("Location: $this->tableName.php");
+	}
      /*
      * This method inserts one record into the table, 
      * and redirects user to List, IF user input is valid, 
